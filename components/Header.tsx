@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getCategories } from '@/lib/cosmic'
+import SearchBar from './SearchBar'
 
 export default async function Header() {
   const categories = await getCategories()
@@ -63,11 +64,7 @@ export default async function Header() {
 
           {/* Search */}
           <div className="flex items-center">
-            <button className="p-2 hover:bg-trek-gray rounded">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+            <SearchBar />
           </div>
         </div>
       </nav>

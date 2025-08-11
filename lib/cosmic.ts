@@ -180,3 +180,79 @@ export async function getSaleBikes(): Promise<Bike[]> {
     throw new Error('Failed to fetch sale bikes');
   }
 }
+
+// Search function for server-side use
+export async function searchContent(query: string): Promise<{
+  bikes: Bike[];
+  stories: Story[];
+  pages: Page[];
+}> {
+  const results = {
+    bikes: [] as Bike[],
+    stories: [] as Story[],
+    pages: [] as Page[]
+  };
+
+  if (!query || query.length < 2) {
+    return results;
+  }
+
+  // Search bikes
+  try {
+    const bikesResponse = await cosmic.objects
+      .find({ type: 'bikes' })
+      .props(['id', 'title', 'slug', 'metadata'])
+      .depth(1);
+
+    const bikes = bikesResponse.objects as Bike[];
+    results.bikes = bikes.filter((bike) => 
+      bike.title.toLowerCase().includes(query.toLowerCase()) ||
+      bike.metadata?.model_name?.toLowerCase().includes(query.toLowerCase()) ||
+      bike.metadata?.description?.toLowerCase().includes(query.toLowerCase()) ||
+      bike.metadata?.category?.title?.toLowerCase().includes(query.toLowerCase())
+    );
+  } catch (error) {
+    if (!hasStatus(error) || error.status !== 404) {
+      console.error('Error searching bikes:', error);
+    }
+  }
+
+  // Search stories
+  try {
+    const storiesResponse = await cosmic.objects
+      .find({ type: 'stories' })
+      .props(['id', 'title', 'slug', 'metadata']);
+
+    const stories = storiesResponse.objects as Story[];
+    results.stories = stories.filter((story) => 
+      story.title.toLowerCase().includes(query.toLowerCase()) ||
+      story.metadata?.headline?.toLowerCase().includes(query.toLowerCase()) ||
+      story.metadata?.excerpt?.toLowerCase().includes(query.toLowerCase()) ||
+      story.metadata?.author?.toLowerCase().includes(query.toLowerCase())
+    );
+  } catch (error) {
+    if (!hasStatus(error) || error.status !== 404) {
+      console.error('Error searching stories:', error);
+    }
+  }
+
+  // Search pages
+  try {
+    const pagesResponse = await cosmic.objects
+      .find({ type: 'pages' })
+      .props(['id', 'title', 'slug', 'metadata']);
+
+    const pages = pagesResponse.objects as Page[];
+    results.pages = pages.filter((page) => 
+      page.title.toLowerCase().includes(query.toLowerCase()) ||
+      page.metadata?.page_title?.toLowerCase().includes(query.toLowerCase()) ||
+      page.metadata?.meta_description?.toLowerCase().includes(query.toLowerCase())
+    );
+  } catch (error) {
+    if (!hasStatus(error) || error.status !== 404) {
+      console.error('Error searching pages:', error);
+    }
+  }
+
+  return results;
+}
