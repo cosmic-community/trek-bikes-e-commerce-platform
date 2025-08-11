@@ -6,7 +6,7 @@ export default async function Header() {
   const categories = await getCategories()
 
   return (
-    <header className="bg-trek-black text-white">
+    <header className="bg-trek-black text-white sticky top-0 z-50">
       {/* Top notification bar */}
       <div className="bg-trek-red text-center py-2 text-sm">
         For a limited time, save up to 45% on select bikes!
