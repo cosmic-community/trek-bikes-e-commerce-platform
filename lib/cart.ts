@@ -74,7 +74,10 @@ export function addToCart(item: Omit<CartItem, 'quantity'>, size?: string): Cart
 
   if (existingItemIndex > -1) {
     // Update existing item quantity
-    cart.items[existingItemIndex].quantity += 1;
+    const existingItem = cart.items[existingItemIndex];
+    if (existingItem) {
+      existingItem.quantity += 1;
+    }
   } else {
     // Add new item
     const newItem: CartItem = {
@@ -121,7 +124,10 @@ export function updateCartItemQuantity(itemId: string, quantity: number, size?: 
     if (quantity <= 0) {
       cart.items.splice(itemIndex, 1);
     } else {
-      cart.items[itemIndex].quantity = quantity;
+      const item = cart.items[itemIndex];
+      if (item) {
+        item.quantity = quantity;
+      }
     }
 
     // Recalculate totals

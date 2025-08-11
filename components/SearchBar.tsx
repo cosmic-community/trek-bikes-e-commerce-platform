@@ -14,9 +14,10 @@ interface SearchResult {
 
 interface SearchBarProps {
   className?: string
+  onSearch?: (query: string) => void
 }
 
-export default function SearchBar({ className = '' }: SearchBarProps) {
+export default function SearchBar({ className = '', onSearch }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -68,6 +69,16 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
     setQuery(e.target.value)
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onSearch) {
+      onSearch(query)
+      setQuery('')
+      setResults([])
+      setIsOpen(false)
+      inputRef.current?.blur()
+    }
+  }
+
   const handleResultClick = () => {
     setQuery('')
     setResults([])
@@ -110,6 +121,7 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
           type="text"
           value={query}
           onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
           placeholder="Search bikes, stories..."
           className="w-64 px-4 py-2 pl-10 text-black bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-trek-blue focus:border-transparent"
         />
