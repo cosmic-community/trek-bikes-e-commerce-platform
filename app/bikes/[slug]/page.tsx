@@ -3,6 +3,7 @@ import { getBike, getBikes } from '@/lib/cosmic'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import AddToCartButton from '@/components/AddToCartButton'
 
 interface BikePageProps {
   params: Promise<{ slug: string }>
@@ -146,6 +147,11 @@ export default async function BikePage({ params }: BikePageProps) {
                 </p>
               </div>
             )}
+
+            {/* Add to Cart Section */}
+            <div className="mb-8">
+              <AddToCartButton bike={bike} />
+            </div>
 
             {/* Key Features */}
             {keyFeatures.length > 0 && (
