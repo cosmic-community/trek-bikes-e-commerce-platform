@@ -30,9 +30,21 @@ export async function getBikes(): Promise<Bike[]> {
   }
 }
 
-// Fetch bikes by category
-export async function getBikesByCategory(categoryId: string): Promise<Bike[]> {
+// Fetch bikes by category slug (first get category ID, then filter bikes)
+export async function getBikesByCategory(categorySlug: string): Promise<Bike[]> {
   try {
+    // First, get the category by slug to get its ID
+    const categoryResponse = await cosmic.objects
+      .findOne({ type: 'categories', slug: categorySlug })
+      .props(['id']);
+    
+    if (!categoryResponse.object) {
+      return [];
+    }
+
+    const categoryId = categoryResponse.object.id;
+
+    // Now fetch bikes that have this category ID
     const response = await cosmic.objects
       .find({ 
         type: 'bikes',
