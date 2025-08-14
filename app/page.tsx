@@ -16,7 +16,7 @@ export default async function HomePage() {
     <div>
       {/* Hero Section */}
       <HeroSection
-        title="Fuel your wildest dreams"
+        title="Let's Ride"
         subtitle="Meet the all-new Fuel and Fuel+"
         backgroundImage="https://imgix.cosmicjs.com/f7f04ed0-a455-11ed-81f2-f50e185dd248-M6XC789HLe8.jpg?w=2000&fit=crop&auto=format,compress"
         buttons={[
