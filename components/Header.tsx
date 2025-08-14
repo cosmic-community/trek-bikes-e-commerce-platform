@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ShoppingCart } from 'lucide-react'
 import SearchBar from './SearchBar'
 import { getCart } from '@/lib/cart'
 import type { Cart } from '@/lib/cart'
@@ -39,15 +40,12 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-gray-900 text-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-trek-blue rounded flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
-            </div>
-            <span className="text-xl font-bold">Trek</span>
+          <Link href="/" className="flex items-center">
+            <span className="text-xl font-bold">TREK</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -82,9 +80,7 @@ export default function Header() {
               className="relative p-2 hover:text-trek-blue transition-colors"
               title="Shopping Cart"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.68 4.32a1 1 0 00.95 1.32h9.46c.56 0 1.04-.37 1.18-.88L19 13M7 13v4a2 2 0 002 2h4m-6-2v-2m0 0h.01M17 21v-2a2 2 0 00-2-2h-4m6 4h.01" />
-              </svg>
+              <ShoppingCart className="w-6 h-6" />
               {cart.totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-trek-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cart.totalItems > 99 ? '99+' : cart.totalItems}
@@ -111,7 +107,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t">
+          <div className="md:hidden bg-gray-900 border-t border-gray-700">
             <nav className="flex flex-col py-4 space-y-2">
               <Link 
                 href="/bikes" 
